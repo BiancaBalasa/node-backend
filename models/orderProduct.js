@@ -1,13 +1,7 @@
 const { DataTypes, Model, Sequelize } = require("sequelize");
 
 module.exports = (sequelize) => {
-  class OrderProduct extends Model {
-    static associate(models) {
-      OrderProduct.hasOne(models.User, {
-        foreignKey: "customerProfileId",
-      });
-    }
-  }
+  class OrderProduct extends Model {}
 
   OrderProduct.init(
     {
@@ -17,7 +11,7 @@ module.exports = (sequelize) => {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      quantitiy: {
+      quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

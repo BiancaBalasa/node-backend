@@ -29,7 +29,7 @@ module.exports = {
           onDelete: "cascade",
         },
       },
-      quantitiy: {
+      quantity: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

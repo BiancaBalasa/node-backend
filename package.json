@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@ngneat/falso": "^6.3.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
