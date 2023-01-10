@@ -1,7 +1,7 @@
 const { GraphQLString, GraphQLNonNull } = require("graphql");
 const { UserType, RegisterReturnType } = require("./typeDef");
+const crypto = require("crypto");
 const db = require("../../models");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const registerCustomer = {
@@ -19,10 +19,10 @@ const registerCustomer = {
       lastName: args.lastName,
       phoneNumber: args.phoneNumber,
     });
-    console.log(customerProfile.dataValues);
+
     const user = await db.User.create({
       email: args.email,
-      password: args.password,
+      password: crypto.createHash("sha256").update(args.password).digest("hex"),
       customerProfileId: customerProfile.dataValues.id,
       roleId: "1",
     });
@@ -42,10 +42,15 @@ const loginMutation = {
   },
   resolve: async (source, args) => {
     const { email, password } = args;
+    const hashedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex");
 
     const user = await db.User.findOne({
       where: {
         email,
+        password: hashedPassword,
       },
     });
 
@@ -55,19 +60,13 @@ const loginMutation = {
       };
     }
 
-    const passwordMatches = await bcrypt.compare(password, user.password);
-
-    if (passwordMatches) {
+    if (user) {
       const token = jwt.sign({ userID: user.id }, process.env.JWT_SECRET);
 
       return {
         token,
       };
     }
-
-    return {
-      token: null,
-    };
   },
 };
 
