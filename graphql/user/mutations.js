@@ -1,5 +1,5 @@
 const { GraphQLString, GraphQLNonNull } = require("graphql");
-const { UserType, RegisterReturnType } = require("./typeDef");
+const { UserType, RegisterReturnType, TokenType } = require("./typeDef");
 const crypto = require("crypto");
 const db = require("../../models");
 const jwt = require("jsonwebtoken");
@@ -31,7 +31,7 @@ const registerCustomer = {
 };
 
 const loginMutation = {
-  type: UserType,
+  type: TokenType,
   args: {
     email: {
       type: new GraphQLNonNull(GraphQLString),

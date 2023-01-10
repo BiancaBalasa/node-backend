@@ -11,6 +11,13 @@ const UserType = new GraphQLObjectType({
   }),
 });
 
+const TokenType = new GraphQLObjectType({
+  name: "Token",
+  fields: () => ({
+    token: { type: GraphQLString }
+  }),
+});
+
 const CustomerProfileType = new GraphQLObjectType({
   name: "CustomerProfile",
   fields: () => ({
@@ -29,4 +36,4 @@ const RegisterReturnType = new GraphQLObjectType({
   }),
 });
 
-module.exports = { UserType, RegisterReturnType };
+module.exports = { UserType, RegisterReturnType, TokenType };
