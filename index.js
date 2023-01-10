@@ -17,7 +17,7 @@ const productQuery = require("./graphql/product/query");
 const Query = new GraphQLObjectType({
   name: "Query",
   fields: {
-    ...productQuery,
+    ...productQuery
   },
 });
 

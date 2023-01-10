@@ -1,4 +1,4 @@
-const { GraphQLID, GraphQLList } = require("graphql");
+const { GraphQLID, GraphQLList, GraphQLString } = require("graphql");
 const ProductType = require("./typeDef");
 const db = require('../../models')
 const Product = require('../../models/product')
@@ -15,6 +15,17 @@ const getProduct = {
     }
 }
 
+const getProductByName = {
+    type: ProductType,
+    args: {
+        name: {type: GraphQLString}
+    },
+    resolve: async (parent, args, context, info) => {
+        const product = await db.Product.findOne({ where: { name: args.name } })
+        return product
+    }
+}
+
 const getAllProducts = {
     type: new GraphQLList(ProductType),
     resolve: async (parent, args, context, info) => {
@@ -25,5 +36,6 @@ const getAllProducts = {
 
 module.exports = {
     getProduct,
+    getProductByName,
     getAllProducts
 }
