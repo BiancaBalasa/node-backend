@@ -52,6 +52,7 @@ const loginMutation = {
         email,
         password: hashedPassword,
       },
+      include: { model: db.Role },
     });
 
     if (!user) {
@@ -61,7 +62,10 @@ const loginMutation = {
     }
 
     if (user) {
-      const token = jwt.sign({ userID: user.id }, process.env.JWT_SECRET);
+      const token = jwt.sign(
+        { userID: user.id, role: user.Role.name },
+        process.env.JWT_SECRET
+      );
 
       return {
         token,
