@@ -1,7 +1,6 @@
 const { GraphQLString, GraphQLFloat, GraphQLID } = require("graphql");
 const ProductType = require("./typeDef");
 const db = require("../../models");
-const Product = require("../../models/product");
 
 const createProduct = {
   type: ProductType,
@@ -24,19 +23,24 @@ const updateProduct = {
   args: {
     id: { type: GraphQLID },
     name: { type: GraphQLString },
+    price: { type: GraphQLFloat },
     description: { type: GraphQLString },
   },
   resolve: async (source, args, { tokenPayload }) => {
+    const { id, name, price, description } = args;
     if (tokenPayload.role !== "Admin") {
       return null;
     }
 
-    const product = await db.Product.update(args, {
-      where: {
-        id: args.id,
-      },
-    });
-    return product;
+    await db.Product.update(
+      { name, price, description },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+    return db.Product.findByPk(id);
   },
 };
 

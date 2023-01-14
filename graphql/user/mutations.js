@@ -1,5 +1,5 @@
 const { GraphQLString, GraphQLNonNull } = require("graphql");
-const { UserType, RegisterReturnType, TokenType } = require("./typeDef");
+const { RegisterReturnType, TokenType } = require("./typeDef");
 const crypto = require("crypto");
 const db = require("../../models");
 const jwt = require("jsonwebtoken");
@@ -13,7 +13,7 @@ const registerCustomer = {
     email: { type: GraphQLString },
     password: { type: GraphQLString },
   },
-  resolve: async (parent, args, context, info) => {
+  resolve: async (source, args, context) => {
     const customerProfile = await db.CustomerProfile.create({
       firstName: args.firstName,
       lastName: args.lastName,
@@ -40,7 +40,7 @@ const loginMutation = {
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  resolve: async (source, args) => {
+  resolve: async (source, args, context) => {
     const { email, password } = args;
     const hashedPassword = crypto
       .createHash("sha256")
